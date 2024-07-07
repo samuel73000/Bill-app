@@ -45,14 +45,7 @@ Installez les packages npm (décrits dans `package.json`) :
 $ npm install
 ```
 
-Installez live-server pour lancer un serveur local :
-```
-$ npm install -g live-server
-```
-
-Lancez l'application :
-```
-$ live-server
+npm start
 ```
 
 Puis allez à l'adresse : `http://127.0.0.1:8080/`
