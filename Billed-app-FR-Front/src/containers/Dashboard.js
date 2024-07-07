@@ -85,10 +85,16 @@ export default class {
     if (typeof $('#modaleFileAdmin1').modal === 'function') $('#modaleFileAdmin1').modal('show')
   }
 
+
+
+
+// fonction pour ouvrir une note de frais
   handleEditTicket(e, bill, bills) {
+    // console.log("ouvre note de frais")
     if (this.counter === undefined || this.id !== bill.id) this.counter = 0
     if (this.id === undefined || this.id !== bill.id) this.id = bill.id
-    if (this.counter % 2 === 0) {
+    if (this.counter % 1 === 0) {
+      // console.log("ouvre note de frais good")
       bills.forEach(b => {
         $(`#open-bill${b.id}`).css({ background: '#0D5AE5' })
       })
@@ -97,6 +103,7 @@ export default class {
       $('.vertical-navbar').css({ height: '150vh' })
       this.counter ++
     } else {
+      // console.log("ouvre note de frais not good")
       $(`#open-bill${bill.id}`).css({ background: '#0D5AE5' })
 
       $('.dashboard-right-container div').html(`
@@ -109,6 +116,10 @@ export default class {
     $('#btn-accept-bill').click((e) => this.handleAcceptSubmit(e, bill))
     $('#btn-refuse-bill').click((e) => this.handleRefuseSubmit(e, bill))
   }
+
+
+
+
 
   handleAcceptSubmit = (e, bill) => {
     const newBill = {
@@ -130,7 +141,12 @@ export default class {
     this.onNavigate(ROUTES_PATH['Dashboard'])
   }
 
+
+
+
+// function pour ouvir la liste des notes de frais
   handleShowTickets(e, bills, index) {
+    // console.log("ouvre liste des notes de frais")
     if (this.counter === undefined || this.index !== index) this.counter = 0
     if (this.index === undefined || this.index !== index) this.index = index
     if (this.counter % 2 === 0) {
@@ -152,6 +168,9 @@ export default class {
     return bills
 
   }
+
+
+
 
   getBillsAllUsers = () => {
     if (this.store) {
