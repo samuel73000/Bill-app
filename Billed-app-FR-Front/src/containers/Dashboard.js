@@ -93,7 +93,7 @@ export default class {
     // console.log("ouvre note de frais")
     if (this.counter === undefined || this.id !== bill.id) this.counter = 0
     if (this.id === undefined || this.id !== bill.id) this.id = bill.id
-    if (this.counter % 1 === 0) {
+    if (this.counter % 3 === 0) { // on modifie le 2 en 3 car le counter est incrémenté 2 fois
       // console.log("ouvre note de frais good")
       bills.forEach(b => {
         $(`#open-bill${b.id}`).css({ background: '#0D5AE5' })
@@ -101,7 +101,7 @@ export default class {
       $(`#open-bill${bill.id}`).css({ background: '#2A2B35' })
       $('.dashboard-right-container div').html(DashboardFormUI(bill))
       $('.vertical-navbar').css({ height: '150vh' })
-      this.counter ++
+      this.counter ++ // on incrémente le counter une 1ème fois
     } else {
       // console.log("ouvre note de frais not good")
       $(`#open-bill${bill.id}`).css({ background: '#0D5AE5' })
@@ -110,12 +110,16 @@ export default class {
         <div id="big-billed-icon" data-testid="big-billed-icon"> ${BigBilledIcon} </div>
       `)
       $('.vertical-navbar').css({ height: '120vh' })
-      this.counter ++
+      this.counter ++ // on incrémente le counter une 1ème fois
     }
+    this.counter ++ // on incrémente le counter une 2ème fois
     $('#icon-eye-d').click(this.handleClickIconEye)
     $('#btn-accept-bill').click((e) => this.handleAcceptSubmit(e, bill))
     $('#btn-refuse-bill').click((e) => this.handleRefuseSubmit(e, bill))
   }
+
+
+
 
 
 
