@@ -3,7 +3,7 @@ import { formatDate, formatStatus } from "../app/format.js"
 import Logout from "./Logout.js"
 
 export default class {
-  constructor({ document, onNavigate, store, localStorage }) {
+  constructor({ document, onNavigate, store, localStorage  }) {
     this.document = document
     this.onNavigate = onNavigate
     this.store = store
@@ -27,6 +27,7 @@ export default class {
     $('#modaleFile').modal('show')
   }
 
+  
   getBills = () => {
     if (this.store) {
       return this.store
