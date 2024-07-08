@@ -27,7 +27,7 @@ describe("Given I am connected as an employee", () => {
       const windowIcon = screen.getByTestId('icon-window')
 
         // Vérifiez que l'élément a la classe 'active-icon '
-      expect(windowIcon.classList.contains('active-icon')).toBeTruthy()
+        expect(windowIcon.classList.contains('active-icon')).toBe(true);
 
 
     })
