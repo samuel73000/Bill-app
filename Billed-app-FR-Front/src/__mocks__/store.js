@@ -62,9 +62,15 @@ const mockedBills = {
       }])
 
   },
-  create(bill) {
-    return Promise.resolve({fileUrl: 'https://localhost:3456/images/test.jpg', key: '1234'})
-  },
+
+  create: jest.fn(() =>
+    Promise.resolve({
+      fileUrl: 'https://localhost:3456/images/test.jpg',
+      key: '1234'
+    })
+  ),
+  
+
   update(bill) {
     return Promise.resolve({
       "id": "47qAXb6fIm2zOKkLzMro",
@@ -90,27 +96,5 @@ export default {
     //return {}
   },
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
