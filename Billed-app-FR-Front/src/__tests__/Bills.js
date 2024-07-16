@@ -24,12 +24,10 @@ global.$ = $;
 // Mock de la méthode `.modal()` de jQuery pour éviter l'ouverture réelle du modal
 $.fn.modal = jest.fn();
 
-describe("Given I am connected as an employee", () => {
-  // Définition du contexte des tests pour un employé connecté
-  describe("When I am on Bills Page", () => {
-    // Test pour vérifier que l'icône de factures est mise en surbrillance en vue verticale
-    test("Then bill icon in vertical layout should be highlighted", async () => {
-      // GIVEN: Un utilisateur est connecté en tant qu'employé
+describe("Étant donné que je suis connecté en tant qu'employé", () => {
+  describe("Quand je suis sur la page des factures", () => {
+    test("Alors l'icône de factures dans la disposition verticale doit être mise en surbrillance", async () => {
+      // GIVEN : Un utilisateur est connecté en tant qu'employé
       Object.defineProperty(window, "localStorage", {
         value: localStorageMock,
       });
@@ -45,17 +43,17 @@ describe("Given I am connected as an employee", () => {
       router();
       window.onNavigate(ROUTES_PATH.Bills);
 
-      // WHEN: Je suis sur la page des factures
+      // WHEN : Je suis sur la page des factures
       await waitFor(() => screen.getByTestId("icon-window"));
       const windowIcon = screen.getByTestId("icon-window");
-
-      // THEN: L'icône de fenêtre doit être mise en surbrillance (j'ai ajouter le EXPECT !!!!!)
+       
+      //////////// LE EXPECT AJOUTÉ PAR MOI ////////////////
+      // THEN : L'icône de fenêtre doit être mise en surbrillance
       expect(windowIcon.classList.contains("active-icon")).toBe(true);
     });
 
-    // Test pour vérifier que les factures sont triées de la plus ancienne à la plus récente
-    test("Then bills should be ordered from earliest to latest", () => {
-      // GIVEN: La liste des factures est affichée
+    test("Alors les factures doivent être triées de la plus ancienne à la plus récente", () => {
+      // GIVEN : La liste des factures est affichée
       document.body.innerHTML = BillsUI({ data: bills });
       const dates = screen
         .getAllByText(
@@ -63,34 +61,31 @@ describe("Given I am connected as an employee", () => {
         )
         .map((a) => a.innerHTML);
 
-      // WHEN: Je vérifie l'ordre des dates
+      // WHEN : Je vérifie l'ordre des dates
       const antiChrono = (a, b) => (a < b ? 1 : -1);
       const datesSorted = [...dates].sort(antiChrono);
 
-      // THEN: Les dates doivent être triées de la plus ancienne à la plus récente
+      // THEN : Les dates doivent être triées de la plus ancienne à la plus récente
       expect(dates).toEqual(datesSorted);
     });
   });
 });
 
+//////////////////////////////// TESTS QUE J'AI AJOUTÉS ///////////////////////////
 
-
-//////////////////////////////// TESTS QUE J'AI AJOUTE ///////////////////////////
-
-// Mock des fonctions de formatage de dates et de statut pour les tests
 jest.mock("../app/format", () => ({
-  formatDate: jest.fn((date) => date), // Mock de formatDate pour retourner la date brute
-  formatStatus: jest.fn((status) => status), // Mock de formatStatus pour retourner le statut brut
+  formatDate: jest.fn((date) => date),
+  formatStatus: jest.fn((status) => status),
 }));
 
-describe("Given I am on the Bills page", () => {
-  let bills; // Instance de la classe Bills utilisée pour les tests
-  let mockStore; // Mock du store utilisé pour simuler les données des factures
-  let mockOnNavigate; // Fonction mockée pour vérifier les appels de navigation
-  let localStorage; // Mock de l'objet localStorage
+describe("Étant donné que je suis sur la page des factures", () => {
+  let bills;
+  let mockStore;
+  let mockOnNavigate;
+  let localStorage;
 
   beforeEach(() => {
-    mockOnNavigate = jest.fn(); // Création d'une fonction mockée pour vérifier les appels à onNavigate
+    mockOnNavigate = jest.fn();
 
     localStorage = {
       getItem: jest.fn(),
@@ -113,34 +108,31 @@ describe("Given I am on the Bills page", () => {
       localStorage: localStorage,
     });
 
-    $.fn.modal = jest.fn();  // Pas besoin d'ajouter une classe 'show', juste vérifier l'appel
+    $.fn.modal = jest.fn();
   });
 
-  // Test pour vérifier que `handleClickNewBill` appelle `onNavigate` avec le chemin NewBill
-  test('Given I click on the New Bill button, When the button is clicked, Then it should navigate to the NewBill page', () => {
-    // GIVEN: Un bouton pour ajouter une nouvelle facture est présent
+  test("Étant donné que je clique sur le bouton Nouvelle Facture, quand le bouton est cliqué, alors il devrait naviguer vers la page NewBill", () => {
+    // GIVEN : Un bouton pour ajouter une nouvelle facture est présent
     const buttonNewBill = document.createElement('button');
     buttonNewBill.setAttribute('data-testid', 'btn-new-bill');
     document.body.appendChild(buttonNewBill);
 
     buttonNewBill.addEventListener('click', () => bills.handleClickNewBill());
 
-    // WHEN: Le bouton est cliqué
-    buttonNewBill.click();  // Déclenche l'événement
+    // WHEN : Le bouton est cliqué
+    buttonNewBill.click();
 
-    // THEN: La fonction `onNavigate` doit être appelée avec le chemin `NewBill`
+    // THEN : La fonction `onNavigate` doit être appelée avec le chemin `NewBill`
     expect(mockOnNavigate).toHaveBeenCalledWith(ROUTES_PATH['NewBill']);
   });
 
-  // Test pour vérifier que `handleClickIconEye` affiche le modal avec l'image correcte pour une URL .jpeg
-  test('Given I click on an Eye Icon with .jpeg image URL, When the icon is clicked, Then the modal should show the correct image for .jpeg', () => {
-    // GIVEN: Un élément d'icône avec une URL d'image .jpeg est présent
+  test("Étant donné que je clique sur une icône Œil avec une URL d'image .jpeg, quand l'icône est cliquée, alors le modal doit afficher l'image correcte pour .jpeg", () => {
+    // GIVEN : Un élément d'icône avec une URL d'image .jpeg est présent
     const icon = document.createElement('div');
     icon.setAttribute('data-testid', 'icon-eye');
     icon.setAttribute('data-bill-url', 'http://example.com/image.jpeg');
     document.body.appendChild(icon);
 
-    // Création du modal avec un conteneur pour l'image
     const modaleFile = document.createElement('div');
     modaleFile.setAttribute('id', 'modaleFile');
     modaleFile.classList.add('modal');
@@ -149,25 +141,23 @@ describe("Given I am on the Bills page", () => {
     modaleFile.appendChild(modalBody);
     document.body.appendChild(modaleFile);
 
-    // WHEN: Je clique sur l'icône
+    // WHEN : Je clique sur l'icône
     bills.handleClickIconEye(icon);
 
-    // THEN: Le modal doit afficher l'image correcte avec l'URL et l'attribut 'alt'
+    // THEN : Le modal doit afficher l'image correcte avec l'URL et l'attribut 'alt'
     expect($.fn.modal).toHaveBeenCalledWith('show');
     const imgInModal = $('#modaleFile').find('img');
     expect(imgInModal.attr('src')).toBe('http://example.com/image.jpeg');
     expect(imgInModal.attr('alt')).toBe('Bill');
   });
 
-  // Test pour vérifier que `handleClickIconEye` affiche le modal avec l'image correcte pour une URL .jpg
-  test('Given I click on an Eye Icon with .jpg image URL, When the icon is clicked, Then the modal should show the correct image for .jpg', () => {
-    // GIVEN: Un élément d'icône avec une URL d'image .jpg est présent
+  test("Étant donné que je clique sur une icône Œil avec une URL d'image .jpg, quand l'icône est cliquée, alors le modal doit afficher l'image correcte pour .jpg", () => {
+    // GIVEN : Un élément d'icône avec une URL d'image .jpg est présent
     const icon = document.createElement('div');
     icon.setAttribute('data-testid', 'icon-eye');
     icon.setAttribute('data-bill-url', 'http://example.com/image.jpg');
     document.body.appendChild(icon);
-  
-    // Création du modal avec un conteneur pour l'image
+
     const modaleFile = document.createElement('div');
     modaleFile.setAttribute('id', 'modaleFile');
     modaleFile.classList.add('modal');
@@ -175,26 +165,24 @@ describe("Given I am on the Bills page", () => {
     modalBody.classList.add('modal-body');
     modaleFile.appendChild(modalBody);
     document.body.appendChild(modaleFile);
-  
-    // WHEN: Je clique sur l'icône
+
+    // WHEN : Je clique sur l'icône
     bills.handleClickIconEye(icon);
-  
-    // THEN: Le modal doit afficher l'image correcte avec l'URL et l'attribut 'alt'
+
+    // THEN : Le modal doit afficher l'image correcte avec l'URL et l'attribut 'alt'
     expect($.fn.modal).toHaveBeenCalledWith('show');
     const imgInModal = $('#modaleFile').find('img');
     expect(imgInModal.attr('src')).toBe('http://example.com/image.jpg');
     expect(imgInModal.attr('alt')).toBe('Bill');
   });
 
-  // Test pour vérifier que `handleClickIconEye` affiche le modal avec l'image correcte pour une URL .png
-  test('Given I click on an Eye Icon with .png image URL, When the icon is clicked, Then the modal should show the correct image for .png', () => {
-    // GIVEN: Un élément d'icône avec une URL d'image .png est présent
+  test("Étant donné que je clique sur une icône Œil avec une URL d'image .png, quand l'icône est cliquée, alors le modal doit afficher l'image correcte pour .png", () => {
+    // GIVEN : Un élément d'icône avec une URL d'image .png est présent
     const icon = document.createElement('div');
     icon.setAttribute('data-testid', 'icon-eye');
     icon.setAttribute('data-bill-url', 'http://example.com/image.png');
     document.body.appendChild(icon);
 
-    // Création du modal avec un conteneur pour l'image
     const modaleFile = document.createElement('div');
     modaleFile.setAttribute('id', 'modaleFile');
     modaleFile.classList.add('modal');
@@ -203,44 +191,41 @@ describe("Given I am on the Bills page", () => {
     modaleFile.appendChild(modalBody);
     document.body.appendChild(modaleFile);
 
-    // WHEN: Je clique sur l'icône
+    // WHEN : Je clique sur l'icône
     bills.handleClickIconEye(icon);
 
-    // THEN: Le modal doit afficher l'image correcte avec l'URL et l'attribut 'alt'
+    // THEN : Le modal doit afficher l'image correcte avec l'URL et l'attribut 'alt'
     expect($.fn.modal).toHaveBeenCalledWith('show');
     const imgInModal = $('#modaleFile').find('img');
     expect(imgInModal.attr('src')).toBe('http://example.com/image.png');
     expect(imgInModal.attr('alt')).toBe('Bill');
   });
 
-  // Test pour vérifier que `getBills` appelle `store.bills().list()` et formate les données
-  test('Given I call getBills method, When getBills is called, Then it should call store.bills().list() and format the data', async () => {
-    // WHEN: Appeler getBills pour tester sa fonctionnalité
+  test("Étant donné que j'appelle la méthode getBills, quand getBills est appelée, alors elle doit appeler store.bills().list() et formater les données", async () => {
+    // WHEN : Appeler getBills pour tester sa fonctionnalité
     await bills.getBills();
 
-    // THEN: Vérifiez que store.bills() a été appelé
+    // THEN : Vérifiez que store.bills() a été appelé
     expect(mockStore.bills).toHaveBeenCalled();
 
-    // THEN: Vérifiez que formatDate et formatStatus ont été appelés avec les bonnes valeurs
+    // THEN : Vérifiez que formatDate et formatStatus ont été appelés avec les bonnes valeurs
     expect(formatDate).toHaveBeenCalledWith("2024-01-01");
     expect(formatStatus).toHaveBeenCalledWith("pending");
   });
 
-  // Test pour vérifier que `getBills` retourne les factures formatées correctement
-  test('Given I call getBills method, When getBills is called, Then it should return the correctly formatted bills', async () => {
-    // WHEN: Appel de la méthode getBills et récupération du résultat
+  test("Étant donné que j'appelle la méthode getBills, quand getBills est appelée, alors elle doit retourner les factures correctement formatées", async () => {
+    // WHEN : Appel de la méthode getBills et récupération du résultat
     const result = await bills.getBills();
 
-    // THEN: Vérification que le résultat correspond aux données de factures attendues
+    // THEN : Vérification que le résultat correspond aux données de factures attendues
     expect(result).toEqual([
       { id: "1", date: "2024-01-01", status: "pending", url: "url1" },
       { id: "2", date: "2024-02-01", status: "accepted", url: "url2" },
     ]);
   });
 
-  // Test pour vérifier que `getBills` gère les erreurs lors du formatage de la date
-  test('Given I call getBills method with invalid date, When getBills is called, Then it should handle the date formatting errors', async () => {
-    // GIVEN: Le mock du store contient une date invalide
+  test("Étant donné que j'appelle la méthode getBills avec une date invalide, quand getBills est appelée, alors elle doit gérer les erreurs de formatage de la date", async () => {
+    // GIVEN : Le mock du store contient une date invalide
     mockStore = {
       bills: jest.fn().mockReturnValue({
         list: jest.fn().mockResolvedValue([
@@ -257,15 +242,13 @@ describe("Given I am on the Bills page", () => {
       localStorage: localStorage,
     });
 
-    // WHEN: Appel de la méthode getBills et récupération du résultat
+    // WHEN : Appel de la méthode getBills et récupération du résultat
     const result = await bills.getBills();
 
-    // THEN: Vérification que le résultat contient les factures avec une date invalide
+    // THEN : Vérification que le résultat contient les factures avec une date invalide
     expect(result).toEqual([
       { id: "1", date: "invalid-date", status: "pending", url: "url1" },
       { id: "2", date: "2024-02-01", status: "accepted", url: "url2" },
     ]);
   });
 });
-
-
