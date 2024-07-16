@@ -46,7 +46,7 @@ describe("Étant donné que je suis connecté en tant qu'employé", () => {
       // WHEN : Je suis sur la page des factures
       await waitFor(() => screen.getByTestId("icon-window"));
       const windowIcon = screen.getByTestId("icon-window");
-       
+
       //////////// LE EXPECT AJOUTÉ PAR MOI ////////////////
       // THEN : L'icône de fenêtre doit être mise en surbrillance
       expect(windowIcon.classList.contains("active-icon")).toBe(true);
@@ -95,8 +95,8 @@ describe("Étant donné que je suis sur la page des factures", () => {
     mockStore = {
       bills: jest.fn().mockReturnValue({
         list: jest.fn().mockResolvedValue([
-          { id: '1', date: '2024-01-01', status: 'pending', url: 'url1' },
-          { id: '2', date: '2024-02-01', status: 'accepted', url: 'url2' },
+          { id: "1", date: "2024-01-01", status: "pending", url: "url1" },
+          { id: "2", date: "2024-02-01", status: "accepted", url: "url2" },
         ]),
       }),
     };
@@ -113,31 +113,31 @@ describe("Étant donné que je suis sur la page des factures", () => {
 
   test("Étant donné que je clique sur le bouton Nouvelle Facture, quand le bouton est cliqué, alors il devrait naviguer vers la page NewBill", () => {
     // GIVEN : Un bouton pour ajouter une nouvelle facture est présent
-    const buttonNewBill = document.createElement('button');
-    buttonNewBill.setAttribute('data-testid', 'btn-new-bill');
+    const buttonNewBill = document.createElement("button");
+    buttonNewBill.setAttribute("data-testid", "btn-new-bill");
     document.body.appendChild(buttonNewBill);
 
-    buttonNewBill.addEventListener('click', () => bills.handleClickNewBill());
+    buttonNewBill.addEventListener("click", () => bills.handleClickNewBill());
 
     // WHEN : Le bouton est cliqué
     buttonNewBill.click();
 
     // THEN : La fonction `onNavigate` doit être appelée avec le chemin `NewBill`
-    expect(mockOnNavigate).toHaveBeenCalledWith(ROUTES_PATH['NewBill']);
+    expect(mockOnNavigate).toHaveBeenCalledWith(ROUTES_PATH["NewBill"]);
   });
 
   test("Étant donné que je clique sur une icône Œil avec une URL d'image .jpeg, quand l'icône est cliquée, alors le modal doit afficher l'image correcte pour .jpeg", () => {
     // GIVEN : Un élément d'icône avec une URL d'image .jpeg est présent
-    const icon = document.createElement('div');
-    icon.setAttribute('data-testid', 'icon-eye');
-    icon.setAttribute('data-bill-url', 'http://example.com/image.jpeg');
+    const icon = document.createElement("div");
+    icon.setAttribute("data-testid", "icon-eye");
+    icon.setAttribute("data-bill-url", "http://example.com/image.jpeg");
     document.body.appendChild(icon);
 
-    const modaleFile = document.createElement('div');
-    modaleFile.setAttribute('id', 'modaleFile');
-    modaleFile.classList.add('modal');
-    const modalBody = document.createElement('div');
-    modalBody.classList.add('modal-body');
+    const modaleFile = document.createElement("div");
+    modaleFile.setAttribute("id", "modaleFile");
+    modaleFile.classList.add("modal");
+    const modalBody = document.createElement("div");
+    modalBody.classList.add("modal-body");
     modaleFile.appendChild(modalBody);
     document.body.appendChild(modaleFile);
 
@@ -145,24 +145,24 @@ describe("Étant donné que je suis sur la page des factures", () => {
     bills.handleClickIconEye(icon);
 
     // THEN : Le modal doit afficher l'image correcte avec l'URL et l'attribut 'alt'
-    expect($.fn.modal).toHaveBeenCalledWith('show');
-    const imgInModal = $('#modaleFile').find('img');
-    expect(imgInModal.attr('src')).toBe('http://example.com/image.jpeg');
-    expect(imgInModal.attr('alt')).toBe('Bill');
+    expect($.fn.modal).toHaveBeenCalledWith("show");
+    const imgInModal = $("#modaleFile").find("img");
+    expect(imgInModal.attr("src")).toBe("http://example.com/image.jpeg");
+    expect(imgInModal.attr("alt")).toBe("Bill");
   });
 
   test("Étant donné que je clique sur une icône Œil avec une URL d'image .jpg, quand l'icône est cliquée, alors le modal doit afficher l'image correcte pour .jpg", () => {
     // GIVEN : Un élément d'icône avec une URL d'image .jpg est présent
-    const icon = document.createElement('div');
-    icon.setAttribute('data-testid', 'icon-eye');
-    icon.setAttribute('data-bill-url', 'http://example.com/image.jpg');
+    const icon = document.createElement("div");
+    icon.setAttribute("data-testid", "icon-eye");
+    icon.setAttribute("data-bill-url", "http://example.com/image.jpg");
     document.body.appendChild(icon);
 
-    const modaleFile = document.createElement('div');
-    modaleFile.setAttribute('id', 'modaleFile');
-    modaleFile.classList.add('modal');
-    const modalBody = document.createElement('div');
-    modalBody.classList.add('modal-body');
+    const modaleFile = document.createElement("div");
+    modaleFile.setAttribute("id", "modaleFile");
+    modaleFile.classList.add("modal");
+    const modalBody = document.createElement("div");
+    modalBody.classList.add("modal-body");
     modaleFile.appendChild(modalBody);
     document.body.appendChild(modaleFile);
 
@@ -170,24 +170,24 @@ describe("Étant donné que je suis sur la page des factures", () => {
     bills.handleClickIconEye(icon);
 
     // THEN : Le modal doit afficher l'image correcte avec l'URL et l'attribut 'alt'
-    expect($.fn.modal).toHaveBeenCalledWith('show');
-    const imgInModal = $('#modaleFile').find('img');
-    expect(imgInModal.attr('src')).toBe('http://example.com/image.jpg');
-    expect(imgInModal.attr('alt')).toBe('Bill');
+    expect($.fn.modal).toHaveBeenCalledWith("show");
+    const imgInModal = $("#modaleFile").find("img");
+    expect(imgInModal.attr("src")).toBe("http://example.com/image.jpg");
+    expect(imgInModal.attr("alt")).toBe("Bill");
   });
 
   test("Étant donné que je clique sur une icône Œil avec une URL d'image .png, quand l'icône est cliquée, alors le modal doit afficher l'image correcte pour .png", () => {
     // GIVEN : Un élément d'icône avec une URL d'image .png est présent
-    const icon = document.createElement('div');
-    icon.setAttribute('data-testid', 'icon-eye');
-    icon.setAttribute('data-bill-url', 'http://example.com/image.png');
+    const icon = document.createElement("div");
+    icon.setAttribute("data-testid", "icon-eye");
+    icon.setAttribute("data-bill-url", "http://example.com/image.png");
     document.body.appendChild(icon);
 
-    const modaleFile = document.createElement('div');
-    modaleFile.setAttribute('id', 'modaleFile');
-    modaleFile.classList.add('modal');
-    const modalBody = document.createElement('div');
-    modalBody.classList.add('modal-body');
+    const modaleFile = document.createElement("div");
+    modaleFile.setAttribute("id", "modaleFile");
+    modaleFile.classList.add("modal");
+    const modalBody = document.createElement("div");
+    modalBody.classList.add("modal-body");
     modaleFile.appendChild(modalBody);
     document.body.appendChild(modaleFile);
 
@@ -195,10 +195,10 @@ describe("Étant donné que je suis sur la page des factures", () => {
     bills.handleClickIconEye(icon);
 
     // THEN : Le modal doit afficher l'image correcte avec l'URL et l'attribut 'alt'
-    expect($.fn.modal).toHaveBeenCalledWith('show');
-    const imgInModal = $('#modaleFile').find('img');
-    expect(imgInModal.attr('src')).toBe('http://example.com/image.png');
-    expect(imgInModal.attr('alt')).toBe('Bill');
+    expect($.fn.modal).toHaveBeenCalledWith("show");
+    const imgInModal = $("#modaleFile").find("img");
+    expect(imgInModal.attr("src")).toBe("http://example.com/image.png");
+    expect(imgInModal.attr("alt")).toBe("Bill");
   });
 
   test("Étant donné que j'appelle la méthode getBills, quand getBills est appelée, alors elle doit appeler store.bills().list() et formater les données", async () => {
