@@ -251,4 +251,43 @@ describe("Étant donné que je suis sur la page des factures", () => {
       { id: "2", date: "2024-02-01", status: "accepted", url: "url2" },
     ]);
   });
+  
+});
+jest.mock("../app/store", () => ({
+  bills: jest.fn().mockImplementation(() => {
+    return {
+      list: () => {
+        return Promise.reject(new Error("Erreur 404"));
+      },
+    };
+  }),
+}));
+
+
+
+// test error 404 /////
+describe("Étant donné que je suis connecté en tant qu'employé", () => {
+  describe("Quand je suis sur la page des factures", () => {
+    test("fetches bills from an API and fails with 404 message error", async () => {
+      // GIVEN : Mock de localStorage et configuration de la navigation
+      Object.defineProperty(window, "localStorage", { value: localStorageMock });
+      window.localStorage.setItem(
+        "user",
+        JSON.stringify({ type: "Employee" })
+      );
+      const root = document.createElement("div");
+      root.setAttribute("id", "root");
+      document.body.append(root);
+      router();
+
+      // WHEN : Navigation vers la page des factures
+      window.onNavigate(ROUTES_PATH.Bills);
+      
+      // THEN : Attendre que le message d'erreur soit rendu
+      await waitFor(() => {
+        const message = screen.getByText(/Erreur 404/);
+        expect(message).toBeTruthy();
+      });
+    });
+  });
 });
