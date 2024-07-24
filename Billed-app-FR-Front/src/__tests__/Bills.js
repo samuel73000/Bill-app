@@ -265,7 +265,7 @@ jest.mock("../app/store", () => ({
 
 
 
-// test error 404 /////
+// test error 404 //
 describe("Étant donné que je suis connecté en tant qu'employé", () => {
   describe("Quand je suis sur la page des factures", () => {
     test("fetches bills from an API and fails with 404 message error", async () => {
